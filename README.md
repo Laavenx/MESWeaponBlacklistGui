@@ -1,6 +1,8 @@
 # MES NPC Weapon Upgrade extension
 
 GUI blacklisting instead of using commands/manual check g menu.
+If something doesn't work make sure (your save name)\Storage\1521905890.sbm_ModularEncountersSystems exists
+and MES is loaded into the save.
 
 ## Installation
 1. Exit from Space Engineers
