@@ -152,38 +152,58 @@ namespace Blacklist.Gui
         private static List<string> CheckedWeapons()
         {
             var dir = Path.Combine(MyAPIGateway.Session.CurrentPath, "Storage\\1521905890.sbm_ModularEncountersSystems\\Config-Grids.xml");
-            var xmlfile = new XmlDocument();
-            xmlfile.LoadXml(File.ReadAllText(dir));
-            XmlNodeList targetElement = xmlfile.GetElementsByTagName("WeaponReplacerBlacklist");
-            XmlElement target = (XmlElement)targetElement[0];
-            List<string> CheckedList = new List<string>();
-            foreach ( XmlNode node in target)
+            if (File.Exists(dir))
             {
-                CheckedList.Add(node.InnerText);
+                var xmlfile = new XmlDocument();
+                xmlfile.LoadXml(File.ReadAllText(dir));
+                XmlNodeList targetElement = xmlfile.GetElementsByTagName("WeaponReplacerBlacklist");
+                XmlElement target = (XmlElement)targetElement[0];
+                List<string> CheckedList = new List<string>();
+                foreach (XmlNode node in target)
+                {
+                    CheckedList.Add(node.InnerText);
+                }
+                return CheckedList;
             }
-            return CheckedList;
+            else
+            {
+                return null;
+            }
+
         }
 
         private void ListWeapons()
         {
-            var weaponList = WeaponList();
             var CheckedList = CheckedWeapons();
-            foreach (var weapon in weaponList)
+            if(CheckedList != null)
             {
-                var WeaponDef = MyDefinitionManager.Static.GetDefinition(weapon);
-                var CubeDef = MyDefinitionManager.Static.GetCubeBlockDefinition(weapon);
-                //var CubeSize = MyDefinitionManager.Static.GetCubeSize(CubeDef.CubeSize);
+                var weaponList = WeaponList();
+                foreach (var weapon in weaponList)
+                {
+                    var WeaponDef = MyDefinitionManager.Static.GetDefinition(weapon);
+                    var CubeDef = MyDefinitionManager.Static.GetCubeBlockDefinition(weapon);
+                    //var CubeSize = MyDefinitionManager.Static.GetCubeSize(CubeDef.CubeSize);
+                    var row = new MyGuiControlTable.Row();
+                    MyGuiControlTable.Cell disabledCell = new MyGuiControlTable.Cell();
+                    var Check = CheckedList.Contains(weapon.SubtypeName);
+                    MyGuiControlCheckbox disabledBox = new MyGuiControlCheckbox(isChecked: Check);
+                    toolbarTable.Controls.Add(disabledBox);
+                    disabledCell.Control = disabledBox;
+                    row.AddCell(new MyGuiControlTable.Cell(WeaponDef.DisplayNameText, WeaponDef.Id.SubtypeName, WeaponDef.ToString()));
+                    row.AddCell(new MyGuiControlTable.Cell(CubeDef.CubeSize.ToString()));
+                    row.AddCell(disabledCell);
+                    toolbarTable.Add(row);
+                }
+            }
+            else
+            {
                 var row = new MyGuiControlTable.Row();
-                MyGuiControlTable.Cell disabledCell = new MyGuiControlTable.Cell();
-                var Check = CheckedList.Contains(weapon.SubtypeName);
-                MyGuiControlCheckbox disabledBox = new MyGuiControlCheckbox(isChecked: Check);
-                toolbarTable.Controls.Add(disabledBox);
-                disabledCell.Control = disabledBox;
-                row.AddCell(new MyGuiControlTable.Cell(WeaponDef.DisplayNameText, WeaponDef.Id.SubtypeName, WeaponDef.ToString()));
-                row.AddCell(new MyGuiControlTable.Cell(CubeDef.CubeSize.ToString()));
-                row.AddCell(disabledCell);
+                row.AddCell(new MyGuiControlTable.Cell("Couldn't load blacklist"));
+                row.AddCell(new MyGuiControlTable.Cell(""));
+                row.AddCell(new MyGuiControlTable.Cell(""));
                 toolbarTable.Add(row);
             }
+
         }
 
         private static ICollection<MyDefinitionId> WeaponList()
