@@ -234,8 +234,5 @@ namespace Blacklist.Gui
             return weaponList;
         }
 
-        private string SelectedName => toolbarTable.SelectedRow?.GetCell(0)?.Text?.ToString() ?? "";
-
-        public override string GetFriendlyName() => "ListDialog";
     }
 }

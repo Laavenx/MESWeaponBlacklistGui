@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CoreSystems.Support;
 using ProtoBuf;
 using Sandbox.ModAPI;
 using VRage;
@@ -30,7 +31,7 @@ namespace CoreSystems.Api
         private Action<MyEntity, int, long> _addMagazines;
         private Action<MyEntity, int, string> _setAmmo;
         private Func<MyEntity, bool> _closePhantom;
-        private Func<string, uint, bool, long, string, int, float?, MyEntity, bool, bool, MyEntity> _spawnPhantom;
+        private Func<string, uint, bool, long, string, int, float?, MyEntity, bool, bool, long, MyEntity> _spawnPhantom;
 
         /// <summary>
         /// Get information about a particular target relative to this phantom
@@ -101,7 +102,7 @@ namespace CoreSystems.Api
         /// <param name="addToPrunning"></param>
         /// <param name="shadows"></param>
         /// <returns></returns>
-        internal MyEntity SpawnPhantom(string phantomType, uint maxAge = 0, bool closeWhenOutOfAmmo = false, long defaultReloads = long.MaxValue, string ammoOverideName = null, TriggerActions trigger = TriggerActions.TriggerOff, float? modelScale = null, MyEntity parnet = null, bool addToPrunning = false, bool shadows = false)
-            => _spawnPhantom?.Invoke(phantomType, maxAge, closeWhenOutOfAmmo, defaultReloads, ammoOverideName, (int)trigger, modelScale, parnet, addToPrunning, shadows) ?? null;
+        internal MyEntity SpawnPhantom(string phantomType, uint maxAge = 0, bool closeWhenOutOfAmmo = false, long defaultReloads = long.MaxValue, string ammoOverideName = null, TriggerActions trigger = TriggerActions.TriggerOff, float? modelScale = null, MyEntity parnet = null, bool addToPrunning = false, bool shadows = false, long identityId = 0)
+            => _spawnPhantom?.Invoke(phantomType, maxAge, closeWhenOutOfAmmo, defaultReloads, ammoOverideName, (int)trigger, modelScale, parnet, addToPrunning, shadows, identityId) ?? null;
     }
 }
