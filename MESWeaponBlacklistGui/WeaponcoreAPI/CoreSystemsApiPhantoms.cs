@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CoreSystems.Support;
 using ProtoBuf;
 using Sandbox.ModAPI;
 using VRage;
