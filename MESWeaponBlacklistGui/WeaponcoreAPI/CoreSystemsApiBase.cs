@@ -204,6 +204,7 @@ namespace CoreSystems.Api
             AssignMethod(delegates, "SetAmmo", ref _setAmmo);
             AssignMethod(delegates, "ClosePhantom", ref _closePhantom);
             AssignMethod(delegates, "SpawnPhantom", ref _spawnPhantom);
+            AssignMethod(delegates, "SetFocusTarget", ref _setPhantomFocusTarget);
 
             if (getWeaponDefinitions)
             {
